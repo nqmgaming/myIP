@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -35,6 +36,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -55,21 +57,17 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation(platform("io.insert-koin:koin-bom:4.1.1"))
-    implementation("io.insert-koin:koin-core")
-    implementation("io.insert-koin:koin-android")
-    implementation("io.insert-koin:koin-compose")
-    implementation("io.insert-koin:koin-compose-viewmodel")
-    implementation("io.insert-koin:koin-compose-viewmodel-navigation")
-    implementation("io.insert-koin:koin-ktor")
-    implementation("io.insert-koin:koin-logger-slf4j")
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose.viewmodel)
 
-    implementation("io.ktor:ktor-client-core:3.3.3")
-    implementation("io.ktor:ktor-client-okhttp:3.3.3")
-    implementation("io.ktor:ktor-client-content-negotiation:3.3.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.android)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.compose.destination.core)
     ksp(libs.compose.destination.ksp)

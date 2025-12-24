@@ -1,4 +1,5 @@
 package app.pwhs.myip.presentation
 
-class HomeUIAction {
+sealed class HomeUIAction {
+    data object OnRefresh : HomeUIAction()
 }
