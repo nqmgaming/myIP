@@ -73,4 +73,6 @@ dependencies {
     ksp(libs.compose.destination.ksp)
 
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+    implementation("io.coil-kt.coil3:coil-svg:3.3.0")
 }

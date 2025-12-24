@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -18,9 +19,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import app.pwhs.myip.core.extension.getSVGAsset
 import app.pwhs.myip.ui.theme.MyIPTheme
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.svg.SvgDecoder
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -45,6 +53,7 @@ fun HomeUI(
     homeUIState: HomeUIState,
     homeUIAction: (HomeUIAction) -> Unit
 ) {
+    val context = LocalContext.current
     Scaffold(
         modifier = modifier,
         floatingActionButton = {
@@ -80,8 +89,35 @@ fun HomeUI(
                 )
             } else {
                 Text(
-                    text = "Your IP Address is: ${homeUIState.ipInfo?.ip?.ipAddress ?: "N/A"}",
-                    style = MaterialTheme.typography.bodyLarge
+                    text = homeUIState.ipInfo?.ip?.ipAddress ?: "N/A",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 32.sp
+                )
+                Text(
+                    text = homeUIState.ipInfo?.location?.city ?: "Unknown Location",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                Text(
+                    text = homeUIState.ipInfo?.location?.country ?: "Unknown Country",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                val flag = context.getSVGAsset(
+                    homeUIState.ipInfo?.location?.countryCode ?: "unknown.svg"
+                )
+                val imageLoader = ImageLoader.Builder(context)
+                    .components {
+                        add(SvgDecoder.Factory())
+                    }
+                    .build()
+                AsyncImage(
+                    model = flag,
+                    imageLoader = imageLoader,
+                    modifier = Modifier.size(72.dp),
+                    contentDescription = null,
                 )
             }
         }
