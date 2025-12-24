@@ -1,12 +1,12 @@
 package app.pwhs.myip.data
 
 import app.pwhs.myip.core.AppConstants.BASE_URL
-import app.pwhs.myip.data.dto.InternetProtocolDto
+import app.pwhs.myip.data.dto.IPInfoDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class ApiService(private val client: HttpClient) {
-    suspend fun getInternetProtocol(): InternetProtocolDto =
+    suspend fun getInternetProtocol(): IPInfoDto =
         client.get(BASE_URL).body()
 }

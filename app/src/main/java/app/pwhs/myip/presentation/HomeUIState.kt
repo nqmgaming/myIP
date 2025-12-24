@@ -1,9 +1,9 @@
 package app.pwhs.myip.presentation
 
-import app.pwhs.myip.domain.entities.InternetProtocolEntity
+import app.pwhs.myip.domain.entities.IPInfoEntity
 
 data class HomeUIState(
-    val internetProtocol: InternetProtocolEntity? = null,
+    val ipInfo: IPInfoEntity? = null,
     val isLoading: Boolean = false,
     val error: String? = null
 )

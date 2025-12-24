@@ -44,7 +44,7 @@ class HomeViewModel(
                     is Resources.Success -> {
                         _uiState.update {
                             it.copy(
-                                internetProtocol = resources.data,
+                                ipInfo = resources.data,
                                 isLoading = false,
                                 error = null
                             )

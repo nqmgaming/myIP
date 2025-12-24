@@ -5,22 +5,12 @@ import app.pwhs.myip.domain.entities.InternetProtocolEntity
 
 fun InternetProtocolDto.toEntity(): InternetProtocolEntity {
     return InternetProtocolEntity(
-        ip = this.ip,
-        country = this.country,
-        region = this.region,
-        city = this.city,
-        asn = this.asn,
-        asnOrg = this.asnOrg
+        ipAddress = this.ipAddress ?: "Unknown",
     )
 }
 
 fun InternetProtocolEntity.toDto(): InternetProtocolDto {
     return InternetProtocolDto(
-        ip = this.ip,
-        country = this.country,
-        region = this.region,
-        city = this.city,
-        asn = this.asn,
-        asnOrg = this.asnOrg
+        ipAddress = this.ipAddress,
     )
 }

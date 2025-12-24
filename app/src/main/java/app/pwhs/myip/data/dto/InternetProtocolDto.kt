@@ -5,11 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class InternetProtocolDto(
-    val asn: Long,
-    @SerialName("asn_org")
-    val asnOrg: String,
-    val city: String,
-    val country: String,
-    val ip: String,
-    val region: String
+    @SerialName("ip")
+    val ipAddress: String? = null,
 )

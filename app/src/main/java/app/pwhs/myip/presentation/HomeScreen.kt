@@ -80,7 +80,7 @@ fun HomeUI(
                 )
             } else {
                 Text(
-                    text = "Your IP Address is: ${homeUIState.internetProtocol?.ip ?: "N/A"}",
+                    text = "Your IP Address is: ${homeUIState.ipInfo?.ip?.ipAddress ?: "N/A"}",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
