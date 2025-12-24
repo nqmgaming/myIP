@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -69,4 +70,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
+    implementation(libs.compose.destination.core)
+    ksp(libs.compose.destination.ksp)
 }
