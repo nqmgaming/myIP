@@ -71,4 +71,6 @@ dependencies {
 
     implementation(libs.compose.destination.core)
     ksp(libs.compose.destination.ksp)
+
+    implementation(libs.androidx.compose.material.icons.extended)
 }
