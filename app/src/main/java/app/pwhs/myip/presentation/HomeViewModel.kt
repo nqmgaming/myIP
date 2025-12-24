@@ -3,6 +3,7 @@ package app.pwhs.myip.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.pwhs.myip.core.data.Resources
+import app.pwhs.myip.core.util.LocalIPUtils
 import app.pwhs.myip.domain.repository.InternetProtocolRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,12 @@ class HomeViewModel(
     }
 
     private fun getInternetProtocol() {
+        val localIP = LocalIPUtils.getLocalIPs()
+        _uiState.update {
+            it.copy(
+                deviceIP = localIP
+            )
+        }
         viewModelScope.launch {
             internetProtocolRepository.getInternetProtocol().collect { resources ->
                 when (resources) {
@@ -35,7 +42,7 @@ class HomeViewModel(
                         _uiState.update {
                             it.copy(
                                 isLoading = true,
-                                error = null
+                                error = null,
                             )
                         }
 
