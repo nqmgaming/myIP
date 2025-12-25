@@ -7,16 +7,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import app.pwhs.myip.presentation.CountryFlag
+import app.pwhs.myip.R
 import app.pwhs.myip.presentation.HomeUIState
+import coil3.compose.AsyncImage
 
 @Composable
 fun PublicIPCard(
@@ -55,9 +58,11 @@ fun PublicIPCard(
                     )
                 }
 
-                CountryFlag(
-                    context = context,
-                    countryCode = location.countryCode
+                AsyncImage(
+                    model = location.countryFlag,
+                    error = painterResource(R.drawable.ic_github),
+                    contentDescription = null,
+                    modifier = Modifier.size(56.dp)
                 )
             }
 

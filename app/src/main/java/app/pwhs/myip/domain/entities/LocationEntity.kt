@@ -5,5 +5,8 @@ data class LocationEntity(
     val region: String,
     val country: String,
     val countryCode: String,
+    val countryFlag: String,
     val timezone: String,
+    val latitude: Double,
+    val longitude: Double,
 )

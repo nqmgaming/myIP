@@ -10,5 +10,9 @@ data class LocationDto(
     val country: String? = null,
     @SerialName("country_code")
     val countryCode: String? = null,
+    @SerialName("country_flag")
+    val countryFlag: String? = null,
     val timezone: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
 )
