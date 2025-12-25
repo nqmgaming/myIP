@@ -19,7 +19,7 @@ object LocalIPUtils {
                             ipv4 = addr.hostAddress
 
                         is Inet6Address if ipv6 == null ->
-                            ipv6 = addr.hostAddress.split("%")[0]
+                            ipv6 = null ?: addr.hostAddress?.substringBefore("%")
                     }
                 }
             }

@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.pwhs.myip.presentation.CountryFlag
@@ -26,7 +25,6 @@ fun PublicIPCard(
 ) {
     val ip = state.ipInfo?.ip?.ipAddress ?: return
     val location = state.ipInfo.location
-    val clipboardManager = LocalClipboard.current
 
     Card {
         Column(
@@ -70,8 +68,6 @@ fun PublicIPCard(
             ) {
                 CopyIpButton(
                     ip = ip,
-                    clipboardManager = clipboardManager.nativeClipboard,
-                    context = context
                 )
 
                 ShareIpButton(

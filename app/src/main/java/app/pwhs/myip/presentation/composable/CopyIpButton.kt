@@ -1,5 +1,6 @@
 package app.pwhs.myip.presentation.composable
 
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
@@ -13,18 +14,20 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CopyIpButton(
     ip: String,
-    clipboardManager: ClipboardManager,
-    context: Context
 ) {
+    val clipboardManager = LocalClipboard.current
+    val context = LocalContext.current
     OutlinedButton(
         onClick = {
-            clipboardManager.setText(AnnotatedString(ip))
+            val clipData = ClipData.newPlainText("plain text", ip)
+            clipboardManager.nativeClipboard.setPrimaryClip(clipData)
             Toast
                 .makeText(context, "IP copied to clipboard", Toast.LENGTH_SHORT)
                 .show()
