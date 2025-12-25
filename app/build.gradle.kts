@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -19,6 +21,20 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProperties = Properties()
+        try {
+            file(rootProject.file("local.properties")).inputStream()
+                .use { localProperties.load(it) }
+        } catch (_: Exception) {
+            println("local.properties not found, using default values")
+        }
+
+        val baseUrl: String = localProperties.getProperty("BASE_URL")
+        val mapBoxAPIKey: String = localProperties.getProperty("MAP_BOX_API_KEY")
+
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "MAP_BOX_API_KEY", "\"$mapBoxAPIKey\"")
     }
 
     buildTypes {
@@ -73,6 +89,8 @@ dependencies {
     ksp(libs.compose.destination.ksp)
 
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
-    implementation("io.coil-kt.coil3:coil-network-ktor3:3.3.0")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
+    implementation(libs.maps.compose)
+    implementation(libs.android)
 }

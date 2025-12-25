@@ -2,7 +2,6 @@ package app.pwhs.myip.presentation.composable
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -12,12 +11,12 @@ import app.pwhs.myip.presentation.HomeUIState
 
 @Composable
 fun HomeContent(
+    modifier: Modifier,
     state: HomeUIState,
-    context: Context
+    context: Context,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
