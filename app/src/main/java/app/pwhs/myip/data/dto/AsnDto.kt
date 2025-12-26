@@ -8,5 +8,4 @@ data class AsnDto(
     val number: Int? = null,
     @SerialName("org")
     val organization: String? = null,
-    val isp: String? = null,
 )

@@ -6,11 +6,9 @@ import app.pwhs.myip.domain.entities.AsnEntity
 fun AsnDto.toEntity() = AsnEntity(
     number = this.number ?: 0,
     organization = this.organization ?: "Unknown",
-    isp = this.isp ?: "Unknown"
 )
 
 fun AsnEntity.toDto() = AsnDto(
     number = this.number,
     organization = this.organization,
-    isp = this.isp
 )

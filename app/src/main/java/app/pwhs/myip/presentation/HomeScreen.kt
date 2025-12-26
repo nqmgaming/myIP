@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,6 +45,7 @@ import app.pwhs.myip.presentation.composable.HomeContent
 import app.pwhs.myip.presentation.composable.IpSearchBar
 import app.pwhs.myip.ui.theme.MyIPTheme
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
@@ -51,6 +53,7 @@ import com.mapbox.maps.extension.compose.annotation.IconImage
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.style.MapStyle
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -86,6 +89,11 @@ fun HomeUI(
 
     val viewportState = rememberMapViewportState()
 
+    var mapStyle by rememberSaveable {
+        mutableStateOf(Style.MAPBOX_STREETS)
+    }
+
+
     LaunchedEffect(
         homeUIState.ipInfo?.location?.latitude,
         homeUIState.ipInfo?.location?.longitude
@@ -94,10 +102,16 @@ fun HomeUI(
         val lon = homeUIState.ipInfo?.location?.longitude
 
         if (lat != null && lon != null) {
-            viewportState.setCameraOptions {
-                center(Point.fromLngLat(lon, lat))
-                zoom(16.0)
-            }
+            viewportState.flyTo(
+                cameraOptions = CameraOptions.Builder()
+                    .center(Point.fromLngLat(lon, lat))
+                    .zoom(16.0)
+                    .build(),
+                animationOptions = MapAnimationOptions.mapAnimationOptions {
+                    duration(1200)
+                }
+            )
+
         }
     }
 
@@ -117,6 +131,23 @@ fun HomeUI(
                     )
                 },
                 actions = {
+                    IconButton(
+                        onClick = {
+                            mapStyle = when (mapStyle) {
+                                Style.LIGHT -> Style.DARK
+                                Style.DARK -> Style.MAPBOX_STREETS
+                                Style.MAPBOX_STREETS -> Style.SATELLITE
+                                Style.SATELLITE -> Style.SATELLITE_STREETS
+                                Style.SATELLITE_STREETS -> Style.LIGHT
+                                else -> Style.LIGHT
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Layers,
+                            contentDescription = "Change map style"
+                        )
+                    }
                     IconButton(
                         onClick = {
                             homeUIAction(HomeUIAction.OnRefresh)
@@ -179,7 +210,7 @@ fun HomeUI(
                         .padding(bottom = 170.dp),
                     mapViewportState = viewportState,
                     style = {
-                        MapStyle(style = Style.SATELLITE_STREETS)
+                        MapStyle(style = mapStyle)
                     }
                 ) {
                     bitmap?.let { bitmap ->

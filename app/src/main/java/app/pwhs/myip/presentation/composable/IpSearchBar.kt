@@ -1,5 +1,6 @@
 package app.pwhs.myip.presentation.composable
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import app.pwhs.myip.core.extension.isPublicIPv4
 
 @Composable
 fun IpSearchBar(
@@ -41,6 +44,7 @@ fun IpSearchBar(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var expanded by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Surface(
         modifier = modifier,
@@ -92,9 +96,18 @@ fun IpSearchBar(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                         keyboardActions = KeyboardActions(
                             onSearch = {
-                                onSearch()
-                                expanded = false
-                                keyboardController?.hide()
+                                if (query.isPublicIPv4()) {
+                                    onSearch()
+                                    expanded = false
+                                    keyboardController?.hide()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Please enter a valid IPv4 address",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
                             }
                         ),
                         modifier = Modifier.width(180.dp),

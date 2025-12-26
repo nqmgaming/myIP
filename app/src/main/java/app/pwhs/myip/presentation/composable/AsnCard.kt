@@ -22,7 +22,6 @@ fun AsnCard(asn: AsnEntity?) {
 
             InfoRow("ASN", asn?.number?.toString())
             InfoRow("Organization", asn?.organization)
-            InfoRow("ISP", asn?.isp)
         }
     }
 }
