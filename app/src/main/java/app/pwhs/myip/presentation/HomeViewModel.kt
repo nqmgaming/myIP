@@ -23,7 +23,7 @@ class HomeViewModel(
     fun onAction(action: HomeUIAction) {
         when (action) {
             is HomeUIAction.OnRefresh -> {
-                getInternetProtocol()
+                getInternetProtocol(isRefreshing = true)
             }
             is HomeUIAction.OnSearchIp -> {
                 searchIPAddress(action.query)
@@ -31,7 +31,7 @@ class HomeViewModel(
         }
     }
 
-    private fun getInternetProtocol() {
+    private fun getInternetProtocol(isRefreshing: Boolean = false) {
         val localIP = LocalIPUtils.getLocalIPs()
         _uiState.update {
             it.copy(
@@ -44,7 +44,8 @@ class HomeViewModel(
                     is Resources.Loading -> {
                         _uiState.update {
                             it.copy(
-                                isLoading = true,
+                                isLoading = !isRefreshing,
+                                isRefreshing = isRefreshing,
                                 error = null,
                             )
                         }
@@ -56,6 +57,7 @@ class HomeViewModel(
                             it.copy(
                                 ipInfo = resources.data,
                                 isLoading = false,
+                                isRefreshing = false,
                                 error = null
                             )
                         }
@@ -69,6 +71,7 @@ class HomeViewModel(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
+                                isRefreshing = false,
                                 error = resources.message ?: "An unexpected error occurred"
                             )
                         }

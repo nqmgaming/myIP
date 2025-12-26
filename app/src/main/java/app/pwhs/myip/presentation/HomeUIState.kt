@@ -10,5 +10,6 @@ data class HomeUIState(
     val mapLocation: MapLocationEntity? = null,
     val isLoading: Boolean = false,
     val isSearching: Boolean = false,
+    val isRefreshing: Boolean = false,
     val error: String? = null
 )
