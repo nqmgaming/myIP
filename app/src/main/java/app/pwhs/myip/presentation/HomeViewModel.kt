@@ -56,6 +56,10 @@ class HomeViewModel(
                                 error = null
                             )
                         }
+                        if (resources.data?.location == null) return@collect
+                        val latitude = resources.data.location.latitude
+                        val longitude = resources.data.location.longitude
+                        getMapLocation(latitude, longitude)
                     }
 
                     is Resources.Error -> {
@@ -65,6 +69,30 @@ class HomeViewModel(
                                 error = resources.message ?: "An unexpected error occurred"
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getMapLocation(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            internetProtocolRepository.getMapLocation(latitude, longitude).collect { resources ->
+                when (resources) {
+                    is Resources.Loading -> {
+                        // Optionally handle loading state for map location
+                    }
+
+                    is Resources.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                mapLocation = resources.data
+                            )
+                        }
+                    }
+
+                    is Resources.Error -> {
+                        // Optionally handle error state for map location
                     }
                 }
             }

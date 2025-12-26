@@ -31,9 +31,11 @@ android {
         }
 
         val baseUrl: String = localProperties.getProperty("BASE_URL")
+        val mapBoxBaseUrl: String = localProperties.getProperty("MAP_BOX_BASE_URL")
         val mapBoxAPIKey: String = localProperties.getProperty("MAP_BOX_API_KEY")
 
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "MAP_BOX_BASE_URL", "\"$mapBoxBaseUrl\"")
         buildConfigField("String", "MAP_BOX_API_KEY", "\"$mapBoxAPIKey\"")
     }
 
