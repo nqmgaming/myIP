@@ -1,15 +1,15 @@
 package app.pwhs.myip.presentation.composable
 
 import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,14 +31,19 @@ fun CopyIpButton(
             Toast
                 .makeText(context, "IP copied to clipboard", Toast.LENGTH_SHORT)
                 .show()
-        }
+        },
+        border = BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.primary
+        )
     ) {
         Icon(
             imageVector = Icons.Outlined.ContentCopy,
             contentDescription = null,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
+            tint = MaterialTheme.colorScheme.primary
         )
         Spacer(Modifier.width(8.dp))
-        Text("Copy")
+        Text("Copy IP Address")
     }
 }
