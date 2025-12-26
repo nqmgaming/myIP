@@ -91,6 +91,6 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.ktor3)
-    implementation(libs.maps.compose)
-    implementation(libs.android)
+    implementation(libs.maps.compose.ndk27)
+    implementation(libs.mapbox.android.ndk27)
 }

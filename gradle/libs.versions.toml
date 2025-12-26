@@ -1,6 +1,6 @@
 [versions]
 agp = "9.0.0-beta05"
-android = "11.18.0-beta.1"
+mapbox = "11.18.0-beta.1"
 coilCompose = "3.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -19,13 +19,10 @@ kotlin = "2.3.0"
 composeBom = "2025.12.01"
 composeDestinations = "2.3.0"
 ksp = "2.3.4"
-mapsCompose = "11.18.0-beta.1"
 materialIconsExtended = "1.7.8"
-appcompat = "1.7.1"
-material = "1.13.0"
 
 [libraries]
-android = { module = "com.mapbox.maps:android", version.ref = "android" }
+mapbox-android-ndk27 = { module = "com.mapbox.maps:android-ndk27", version.ref = "mapbox" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
@@ -56,9 +53,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLogging" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-maps-compose = { module = "com.mapbox.extension:maps-compose", version.ref = "mapsCompose" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+maps-compose-ndk27 = { module = "com.mapbox.extension:maps-compose-ndk27", version.ref = "mapbox" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -66,4 +61,3 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-
