@@ -22,6 +22,11 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.retain.retain
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +41,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import app.pwhs.myip.R
 import app.pwhs.myip.presentation.composable.HomeContent
+import app.pwhs.myip.presentation.composable.IpSearchBar
 import app.pwhs.myip.ui.theme.MyIPTheme
 import com.mapbox.geojson.Point
 import com.mapbox.maps.Style
@@ -48,6 +54,7 @@ import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -72,7 +79,12 @@ fun HomeUI(
     homeUIAction: (HomeUIAction) -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val scope = rememberCoroutineScope()
+
     val context = LocalContext.current
+    var query by rememberSaveable { mutableStateOf("") }
+
+
     BottomSheetScaffold(
         topBar = {
             TopAppBar(
@@ -137,7 +149,7 @@ fun HomeUI(
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.TopCenter
         ) {
             val bitmap = ContextCompat
                 .getDrawable(context, R.drawable.ic_map_marker)
@@ -164,19 +176,33 @@ fun HomeUI(
                         MapStyle(style = Style.SATELLITE_STREETS)
                     }
                 ) {
-                   bitmap?.let { bitmap ->
-                       PointAnnotation(
-                           point = Point.fromLngLat(
-                               homeUIState.ipInfo?.location?.longitude ?: 0.0,
-                               homeUIState.ipInfo?.location?.latitude ?: 0.0
-                           )
-                       ) {
-                           iconSize = 1.2
-                           iconAnchor = IconAnchor.BOTTOM
-                           iconImage = IconImage(bitmap = bitmap)
-                       }
-                   }
+                    bitmap?.let { bitmap ->
+                        PointAnnotation(
+                            point = Point.fromLngLat(
+                                homeUIState.ipInfo?.location?.longitude ?: 0.0,
+                                homeUIState.ipInfo?.location?.latitude ?: 0.0
+                            )
+                        ) {
+                            iconSize = 1.2
+                            iconAnchor = IconAnchor.BOTTOM
+                            iconImage = IconImage(bitmap = bitmap)
+                        }
+                    }
                 }
+                IpSearchBar(
+                    query = query,
+                    onQueryChange = { query = it },
+                    onSearch = {
+//                        homeUIAction(HomeUIAction.OnSearchIp(query))
+                        scope.launch {
+                            scaffoldState.bottomSheetState.partialExpand()
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.TopCenter)
+                )
+
             }
         }
     }
