@@ -15,10 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import app.pwhs.myip.R
 import app.pwhs.myip.presentation.HomeUIState
 import coil3.compose.AsyncImage
 
@@ -39,7 +37,8 @@ fun PublicIPCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Column(
                     modifier = Modifier.weight(1f)
@@ -71,7 +70,6 @@ fun PublicIPCard(
 
                 AsyncImage(
                     model = location.countryFlag,
-                    error = painterResource(R.drawable.ic_github),
                     contentDescription = null,
                     modifier = Modifier.size(56.dp)
                 )

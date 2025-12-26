@@ -9,5 +9,6 @@ data class HomeUIState(
     val deviceIP: DeviceIPInfoEntity? = null,
     val mapLocation: MapLocationEntity? = null,
     val isLoading: Boolean = false,
+    val isSearching: Boolean = false,
     val error: String? = null
 )

@@ -23,6 +23,16 @@ class InternetProtocolRepositoryImpl(
         }
     }
 
+    override suspend fun searchIPAddress(ip: String): Flow<Resources<IPInfoEntity>> = flow {
+        emit(Resources.Loading())
+        try {
+            val response = apiService.searchIpAddress(ip)
+            emit(Resources.Success(response.toEntity()))
+        } catch (e: Exception) {
+            emit(Resources.Error(e.localizedMessage ?: "An unexpected error occurred"))
+        }
+    }
+
     override suspend fun getMapLocation(
         latitude: Double,
         longitude: Double

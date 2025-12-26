@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface InternetProtocolRepository {
     suspend fun getInternetProtocol(): Flow<Resources<IPInfoEntity>>
+    suspend fun searchIPAddress(ip: String): Flow<Resources<IPInfoEntity>>
     suspend fun getMapLocation(
         latitude: Double,
         longitude: Double

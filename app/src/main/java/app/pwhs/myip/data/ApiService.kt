@@ -13,6 +13,13 @@ class ApiService(private val client: HttpClient) {
     suspend fun getInternetProtocol(): IPInfoDto =
         client.get(BASE_URL).body()
 
+    suspend fun searchIpAddress(ip: String): IPInfoDto =
+        client.get("$BASE_URL/api/search") {
+            url {
+                parameters.append("ip", ip)
+            }
+        }.body()
+
     suspend fun getMapLocation(
         latitude: Double,
         longitude: Double

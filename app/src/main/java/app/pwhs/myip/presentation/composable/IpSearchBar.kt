@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun IpSearchBar(
     query: String,
+    isSearching: Boolean,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
@@ -62,13 +64,17 @@ fun IpSearchBar(
                     }
                 }
             ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .size(24.dp)
-                )
+                if (isSearching) {
+                    CircularProgressIndicator()
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .size(24.dp)
+                    )
+                }
             }
 
             AnimatedVisibility(visible = expanded) {
@@ -95,7 +101,8 @@ fun IpSearchBar(
                         decorationBox = { innerTextField ->
                             if (query.isEmpty()) {
                                 Text(
-                                    "Search IP or domain",
+                                    "Search IP Address",
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }

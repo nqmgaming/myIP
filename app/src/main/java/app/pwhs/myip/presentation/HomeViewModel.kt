@@ -25,6 +25,9 @@ class HomeViewModel(
             is HomeUIAction.OnRefresh -> {
                 getInternetProtocol()
             }
+            is HomeUIAction.OnSearchIp -> {
+                searchIPAddress(action.query)
+            }
         }
     }
 
@@ -93,6 +96,47 @@ class HomeViewModel(
 
                     is Resources.Error -> {
                         // Optionally handle error state for map location
+                    }
+                }
+            }
+        }
+    }
+
+    private fun searchIPAddress(query: String) {
+        viewModelScope.launch {
+            internetProtocolRepository.searchIPAddress(query).collect { resources ->
+                when (resources) {
+                    is Resources.Loading -> {
+                        _uiState.update {
+                            it.copy(
+                                isSearching = true,
+                                error = null,
+                            )
+                        }
+
+                    }
+
+                    is Resources.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                ipInfo = resources.data,
+                                isSearching = false,
+                                error = null
+                            )
+                        }
+                        if (resources.data?.location == null) return@collect
+                        val latitude = resources.data.location.latitude
+                        val longitude = resources.data.location.longitude
+                        getMapLocation(latitude, longitude)
+                    }
+
+                    is Resources.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                isSearching = false,
+                                error = resources.message ?: "An unexpected error occurred"
+                            )
+                        }
                     }
                 }
             }

@@ -20,11 +20,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -84,6 +84,22 @@ fun HomeUI(
     val context = LocalContext.current
     var query by rememberSaveable { mutableStateOf("") }
 
+    val viewportState = rememberMapViewportState()
+
+    LaunchedEffect(
+        homeUIState.ipInfo?.location?.latitude,
+        homeUIState.ipInfo?.location?.longitude
+    ) {
+        val lat = homeUIState.ipInfo?.location?.latitude
+        val lon = homeUIState.ipInfo?.location?.longitude
+
+        if (lat != null && lon != null) {
+            viewportState.setCameraOptions {
+                center(Point.fromLngLat(lon, lat))
+                zoom(16.0)
+            }
+        }
+    }
 
     BottomSheetScaffold(
         topBar = {
@@ -161,17 +177,7 @@ fun HomeUI(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = 170.dp),
-                    mapViewportState = rememberMapViewportState {
-                        setCameraOptions {
-                            center(
-                                Point.fromLngLat(
-                                    homeUIState.ipInfo?.location?.longitude ?: 0.0,
-                                    homeUIState.ipInfo?.location?.latitude ?: 0.0
-                                )
-                            )
-                            zoom(16.0)
-                        }
-                    },
+                    mapViewportState = viewportState,
                     style = {
                         MapStyle(style = Style.SATELLITE_STREETS)
                     }
@@ -191,9 +197,10 @@ fun HomeUI(
                 }
                 IpSearchBar(
                     query = query,
+                    isSearching = homeUIState.isSearching,
                     onQueryChange = { query = it },
                     onSearch = {
-//                        homeUIAction(HomeUIAction.OnSearchIp(query))
+                        homeUIAction(HomeUIAction.OnSearchIp(query))
                         scope.launch {
                             scaffoldState.bottomSheetState.partialExpand()
                         }
